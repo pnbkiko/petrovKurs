@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<?import javafx.scene.control.DatePicker?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kurs.petrovkurs.controller.MachinesEditViewController">
+    <children>
+        <BorderPane layoutX="170.0" layoutY="47.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <bottom>
+                <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <buttons>
+                        <Button fx:id="BtnSave" defaultButton="true" mnemonicParsing="false" onAction="#BtnSaveAction" text="Сохранить" />
+                        <Button fx:id="BtnCancel" cancelButton="true" mnemonicParsing="false" onAction="#BtnCancelAction" text="Отмена" />
+                    </buttons>
+                    <padding>
+                        <Insets right="20.0" />
+                    </padding>
+                </ButtonBar>
+            </bottom>
+            <center>
+                <GridPane BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="190.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="680.0" minWidth="10.0" prefWidth="610.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+
+                    </rowConstraints>
+                    <children>
+                        <TextField fx:id="TextFieldModel" GridPane.columnIndex="1" />
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Модель" />
+                        <TextField fx:id="TextFieldInvNumber" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Инвентарный номер" GridPane.rowIndex="1"/>
+                        <DatePicker fx:id="DatePickerCommissionedAt" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Дата ввода" GridPane.rowIndex="2" />
+
+                    </children>
+                </GridPane>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

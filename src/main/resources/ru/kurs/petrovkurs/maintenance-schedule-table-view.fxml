@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.control.DatePicker?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kurs.petrovkurs.controller.MaintenanceScheduleTableViewController">
+    <children>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <top>
+                <HBox BorderPane.alignment="CENTER_LEFT">
+                    <children>
+                        <MenuBar maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="381.0" HBox.hgrow="ALWAYS">
+                            <menus>
+                                <Menu mnemonicParsing="false" text="Файл">
+                                    <items>
+                                        <MenuItem fx:id="MenuItemBack" mnemonicParsing="false" onAction="#MenuItemBackAction" text="Назад" />
+                                    </items>
+                                </Menu>
+                                <Menu mnemonicParsing="false" text="Правка">
+                                    <items>
+                                        <MenuItem fx:id="MenuItemAdd" mnemonicParsing="false" onAction="#MenuItemAddAction" text="Добавить" />
+                                        <MenuItem fx:id="MenuItemPdfOtchet" text="Создать PDF-отчет" onAction="#MenuItemPdfOtchetAction"/>
+                                        <MenuItem fx:id="MenuItemDelete" mnemonicParsing="false" onAction="#MenuItemDeleteAction" text="Удалить" />
+                                    </items>
+                                </Menu>
+
+                            </menus>
+                        </MenuBar>
+                        <Label fx:id="LabelDate" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="120.0"  text="Label" textAlignment="RIGHT" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets right="20.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </HBox>
+            </top>
+            <center>
+                <BorderPane BorderPane.alignment="CENTER">
+                    <top>
+                        <FlowPane nodeOrientation="LEFT_TO_RIGHT" rowValignment="TOP" BorderPane.alignment="CENTER">
+                            <children>
+                                <DatePicker fx:id="DatePickerFilter" promptText="Выберите дату" />
+                            </children>
+                        </FlowPane>
+                    </top>
+                    <center>
+                        <TableView fx:id="TableViewMaintenanceSchedule" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+                            <columns>
+
+                                <TableColumn id="TableColumnMachines" fx:id="TableColumnMachines" minWidth="0.0" prefWidth="500.0" text="Станок" />
+                                <TableColumn id="TableColumnTypes" fx:id="TableColumnTypes" minWidth="0.0" prefWidth="500.0" text="Вид ТО" />
+                                <TableColumn id="TableColumnNextDue" fx:id="TableColumnNextDue" minWidth="0.0" prefWidth="500.0" text="Дата следующего ТО" />
+                                <TableColumn id="TableColumnLastDone" fx:id="TableColumnLastDone" minWidth="0.0" prefWidth="500.0" text="Дата последнего ТО" />
+
+
+                            </columns>
+                        </TableView>
+                    </center>
+                </BorderPane>
+            </center>
+            <bottom>
+                <Label fx:id="LabelInfo" text="Label" BorderPane.alignment="CENTER_LEFT" />
+            </bottom>
+        </BorderPane>
+        <CheckBox layoutX="-196.0" layoutY="-157.0" mnemonicParsing="false" text="CheckBox" />
+    </children>
+</AnchorPane>
