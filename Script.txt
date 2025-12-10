@@ -1,0 +1,98 @@
+-- Таблица станков
+CREATE TABLE machines (
+    id SERIAL PRIMARY KEY,
+    model TEXT NOT NULL,
+    inv_number TEXT NOT NULL UNIQUE,
+    commissioned_at DATE NOT NULL
+);
+
+-- Таблица видов технического обслуживания
+CREATE TABLE maintenance_types (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    interval_days INTEGER NOT NULL
+);
+
+-- Таблица графика ТО
+CREATE TABLE maintenance_schedule (
+    machine_id INTEGER NOT NULL REFERENCES machines(id) ON DELETE CASCADE,
+    type_id INTEGER NOT NULL REFERENCES maintenance_types(id) ON DELETE CASCADE,
+    next_due DATE NOT NULL,
+    last_done DATE,
+    PRIMARY KEY (machine_id, type_id)
+);
+
+-- Таблица актов ТО
+CREATE TABLE maintenance_acts (
+    id SERIAL PRIMARY KEY,
+    machine_id INTEGER NOT NULL REFERENCES machines(id) ON DELETE CASCADE,
+    type_id INTEGER NOT NULL REFERENCES maintenance_types(id) ON DELETE CASCADE,
+    date DATE NOT NULL,
+    engineer TEXT NOT NULL,
+    notes TEXT,
+    signed BOOLEAN DEFAULT FALSE
+);
+CREATE OR REPLACE FUNCTION update_next_due()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE maintenance_schedule
+    SET last_done = NEW.date,
+        next_due = NEW.date + (SELECT interval_days FROM maintenance_types WHERE id = NEW.type_id)
+    WHERE machine_id = NEW.machine_id AND type_id = NEW.type_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_next_due
+AFTER INSERT ON maintenance_acts
+FOR EACH ROW
+EXECUTE FUNCTION update_next_due();
+
+--Заполнение
+INSERT INTO machines (model, inv_number, commissioned_at) VALUES
+('Модель A', 'INV001', '2020-01-15'),
+('Модель B', 'INV002', '2019-06-10'),
+('Модель C', 'INV003', '2021-03-20'),
+('Модель D', 'INV004', '2018-11-05'),
+('Модель E', 'INV005', '2022-07-01'),
+('Модель F', 'INV006', '2017-09-25'),
+('Модель G', 'INV007', '2020-12-12'),
+('Модель H', 'INV008', '2019-04-18'),
+('Модель I', 'INV009', '2021-08-30'),
+('Модель J', 'INV010', '2016-02-14');
+
+INSERT INTO maintenance_types (name, interval_days) VALUES
+('Ежедневное', 1),
+('Ежемесячное', 30),
+('Капитальное', 180),
+('Плановое', 90),
+('Калибровка', 60),
+('Промывка', 15),
+('Проверка', 7),
+('Ремонт', 120),
+('Обновление ПО', 45),
+('Диагностика', 10);
+
+INSERT INTO maintenance_schedule (machine_id, type_id, next_due, last_done) VALUES
+(1, 1, '2024-02-20', '2024-02-19'),
+(1, 2, '2024-03-20', '2024-02-20'),
+(2, 1, '2024-02-21', '2024-02-20'),
+(2, 3, '2024-08-15', '2024-02-15'),
+(3, 2, '2024-04-19', '2024-03-20'),
+(3, 4, '2024-06-30', '2024-03-01'),
+(4, 5, '2024-05-01', '2024-03-02'),
+(4, 6, '2024-03-30', '2024-03-15'),
+(5, 7, '2024-02-25', '2024-02-24'),
+(6, 8, '2024-07-01', '2024-01-01');
+
+INSERT INTO maintenance_acts (machine_id, type_id, date, engineer, notes, signed) VALUES
+(1, 1, '2024-02-19', 'Инженер Иванов', 'Проведена ежедневная проверка', TRUE),
+(1, 2, '2024-02-20', 'Инженер Петров', 'Плановое обслуживание', TRUE),
+(2, 1, '2024-02-20', 'Инженер Сидоров', 'Проверка станка', TRUE),
+(2, 3, '2024-02-15', 'Инженер Иванов', 'Капитальный ремонт', TRUE),
+(3, 2, '2024-03-20', 'Инженер Петров', 'Обслуживание', TRUE),
+(3, 4, '2024-03-01', 'Инженер Сидоров', 'Проверка', TRUE),
+(4, 5, '2024-03-02', 'Инженер Иванов', 'Обслуживание', TRUE),
+(4, 6, '2024-03-15', 'Инженер Петров', 'Промывка', TRUE),
+(5, 7, '2024-02-24', 'Инженер Сидоров', 'Проверка', TRUE),
+(6, 8, '2024-01-01', 'Инженер Иванов', 'Ремонт', TRUE);
